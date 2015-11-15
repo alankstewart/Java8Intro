@@ -95,7 +95,8 @@ public class StreamsTest {
     @Test
     public void shouldSumExpensiveValues() {
         Integer sum = TRANSACTIONS
-                .stream().filter(t -> t.getValue() > 10)
+                .stream()
+                .filter(t -> t.getValue() > 10)
                 .map(t -> t.getValue())
                 .reduce(0, Integer::sum);
         assertThat(sum, is(38));
