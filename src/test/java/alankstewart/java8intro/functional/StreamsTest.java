@@ -86,4 +86,13 @@ public class StreamsTest {
         int sum = TRANSACTIONS.stream().mapToInt(Transaction::getValue).sum();
         assertThat(sum, is(100));
     }
+
+    @Test
+    public void shouldSumExpensiveValues() {
+        Integer sum = TRANSACTIONS
+                .stream().filter(t -> t.getValue() > 10)
+                .map(t -> t.getValue())
+                .reduce(0, Integer::sum);
+        assertThat(sum, is(38));
+    }
 }
