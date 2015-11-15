@@ -83,10 +83,7 @@ public class StreamsTest {
 
     @Test
     public void shouldSumValues() {
-        int sum = TRANSACTIONS.stream()
-                .mapToInt(Transaction::getValue)
-                .sum();
-
+        int sum = TRANSACTIONS.stream().mapToInt(Transaction::getValue).sum();
         assertThat(sum, is(100));
     }
 }
