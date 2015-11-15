@@ -13,25 +13,29 @@ public class MathOperationTest {
     @Test
     public void shouldAddTwoIntegers() {
         MathOperation addition = (x, y) -> x + y;
-        assertThat(15, is(operate(10, 5, addition)));
+        int value = operate(10, 5, addition);
+        assertThat(value, is(15));
     }
 
     @Test
     public void shouldSubtractTwoIntegers() {
         MathOperation subtraction = (x, y) -> x - y;
-        assertThat(5, is(operate(10, 5, subtraction)));
+        int value = operate(10, 5, subtraction);
+        assertThat(value, is(5));
     }
 
     @Test
     public void shouldMultiplyTwoIntegers() {
         MathOperation multiplication = (x, y) -> x * y;
-        assertThat(50, is(operate(10, 5, multiplication)));
+        int value = operate(10, 5, multiplication);
+        assertThat(value, is(50));
     }
 
     @Test
     public void shouldDivideTwoIntegers() {
         MathOperation division = (x, y) -> x / y;
-        assertThat(2, is(operate(10, 5, division)));
+        int value = operate(10, 5, division);
+        assertThat(value, is(2));
     }
 
     private int operate(int x, int y, MathOperation mathOperation) {
