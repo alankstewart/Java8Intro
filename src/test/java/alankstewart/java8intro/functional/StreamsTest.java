@@ -2,13 +2,13 @@ package alankstewart.java8intro.functional;
 
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import static alankstewart.java8intro.functional.Transaction.Type.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -16,10 +16,27 @@ import static org.junit.Assert.assertThat;
  */
 public class StreamsTest {
 
+    private static final List<Transaction> TRANSACTIONS = Arrays.asList(
+            new Transaction(1, 10, COLLECTIONS),
+            new Transaction(2, 1, COLLECTIONS),
+            new Transaction(3, 5, COLLECTIONS),
+            new Transaction(4, 3, COLLECTIONS),
+            new Transaction(5, 4, COLLECTIONS),
+            new Transaction(6, 6, COLLECTIONS),
+            new Transaction(7, 1, RTGS),
+            new Transaction(8, 10, RTGS),
+            new Transaction(9, 5, INTERNATIONAL),
+            new Transaction(10, 7, INTERNATIONAL),
+            new Transaction(11, 8, INTERNATIONAL),
+            new Transaction(12, 2, DIRECT_ENTRY),
+            new Transaction(13, 11, DIRECT_ENTRY),
+            new Transaction(14, 12, DIRECT_ENTRY),
+            new Transaction(15, 15, DIRECT_ENTRY));
+
     @Test
     public void shouldGetCollectionsTransactionIds() {
         List<Transaction> collectionsTransactions = new ArrayList<>();
-        for (Transaction t : getTransactions()) {
+        for (Transaction t : TRANSACTIONS) {
             if (t.getType() == COLLECTIONS) {
                 collectionsTransactions.add(t);
             }
@@ -45,7 +62,7 @@ public class StreamsTest {
 
     @Test
     public void shouldGetCollectionsTransactionIdsWithStreams() {
-        List<Integer> transactionIds = getTransactions()
+        List<Integer> transactionIds = TRANSACTIONS
                 .stream()
                 .filter(t -> t.getType() == COLLECTIONS)
                 .sorted(comparing(Transaction::getValue).reversed())
@@ -56,22 +73,20 @@ public class StreamsTest {
         assertThat(transactionIds, contains(1, 6, 3, 5));
     }
 
-    private List<Transaction> getTransactions() {
-        return Arrays.asList(
-                new Transaction(1, BigDecimal.TEN, COLLECTIONS),
-                new Transaction(2, BigDecimal.ONE, COLLECTIONS),
-                new Transaction(3, new BigDecimal("5"), COLLECTIONS),
-                new Transaction(4, new BigDecimal("3"), COLLECTIONS),
-                new Transaction(5, new BigDecimal("4"), COLLECTIONS),
-                new Transaction(6, new BigDecimal("6"), COLLECTIONS),
-                new Transaction(7, BigDecimal.ONE, RTGS),
-                new Transaction(8, BigDecimal.TEN, RTGS),
-                new Transaction(9, new BigDecimal("5"), INTERNATIONAL),
-                new Transaction(10, new BigDecimal("7"), INTERNATIONAL),
-                new Transaction(11, new BigDecimal("8"), INTERNATIONAL),
-                new Transaction(12, new BigDecimal("2"), DIRECT_ENTRY),
-                new Transaction(13, new BigDecimal("11"), DIRECT_ENTRY),
-                new Transaction(14, new BigDecimal("9"), DIRECT_ENTRY),
-                new Transaction(15, new BigDecimal("12"), DIRECT_ENTRY));
+    @Test
+    public void shouldFindAndPrintAnyRtgsTransactions() {
+        TRANSACTIONS.stream()
+                .filter(t -> t.getType() == RTGS)
+                .findAny()
+                .ifPresent(System.out::println);
+    }
+
+    @Test
+    public void shouldSumValues() {
+        int sum = TRANSACTIONS.stream()
+                .mapToInt(Transaction::getValue)
+                .sum();
+
+        assertThat(sum, is(100));
     }
 }
