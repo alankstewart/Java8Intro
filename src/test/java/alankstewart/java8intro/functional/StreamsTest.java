@@ -74,6 +74,11 @@ public class StreamsTest {
     }
 
     @Test
+    public void printTransactions() {
+        TRANSACTIONS.forEach(System.out::println);
+    }
+
+    @Test
     public void shouldFindAndPrintAnyRtgsTransactions() {
         TRANSACTIONS.stream()
                 .filter(t -> t.getType() == RTGS)
