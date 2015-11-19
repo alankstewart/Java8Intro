@@ -1,5 +1,7 @@
 package alankstewart.java8intro.datetime;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -17,5 +19,10 @@ public class DateTimeDemo {
         LocalDateTime thePast = now.withDayOfMonth(10).withYear(2014);
         LocalDateTime yetAnother = thePast.plusWeeks(3).plus(3, ChronoUnit.DAYS);
         System.out.println(yetAnother);
+
+        Instant start = Instant.now();
+        // Do something
+        Instant stop = Instant.now();
+        long elapsed = Duration.between(start, stop).toNanos();
     }
 }

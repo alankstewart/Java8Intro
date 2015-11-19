@@ -33,6 +33,6 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("Transaction(id = %d, value = %s, type = %s)", id, value, type);
+        return String.format("Transaction(id = %d, value = %d, type = %s)", id, value, type);
     }
 }

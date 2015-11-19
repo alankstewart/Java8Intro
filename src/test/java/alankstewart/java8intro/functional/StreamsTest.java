@@ -75,11 +75,19 @@ public class StreamsTest {
 
     @Test
     public void printTransactions() {
+        System.out.println("stream");
         TRANSACTIONS.forEach(System.out::println);
     }
 
     @Test
+    public void printTransactionsInParallel() {
+        System.out.println("parallel stream");
+        TRANSACTIONS.parallelStream().forEach(System.out::println);
+    }
+
+    @Test
     public void shouldFindAndPrintAnyRtgsTransactions() {
+        System.out.println("rtgs");
         TRANSACTIONS.stream()
                 .filter(t -> t.getType() == RTGS)
                 .findAny()
