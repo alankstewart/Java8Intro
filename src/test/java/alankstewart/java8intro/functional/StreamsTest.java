@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
  */
 public class StreamsTest {
 
-    private static final List<Transaction> TRANSACTIONS = Arrays.asList(
+    private static List<Transaction> transactions = Arrays.asList(
             new Transaction(1, 10, COLLECTIONS),
             new Transaction(2, 1, COLLECTIONS),
             new Transaction(3, 5, COLLECTIONS),
@@ -35,8 +35,13 @@ public class StreamsTest {
 
     @Test
     public void shouldGetCollectionsTransactionIds() {
+        assertThat(getTransactionIdsOld(), contains(1, 6, 3, 5));
+        assertThat(getTransactionIdsNew(), contains(1, 6, 3, 5));
+    }
+
+    private List<Integer> getTransactionIdsOld() {
         List<Transaction> collectionsTransactions = new ArrayList<>();
-        for (Transaction t : TRANSACTIONS) {
+        for (Transaction t : transactions) {
             if (t.getType() == COLLECTIONS) {
                 collectionsTransactions.add(t);
             }
@@ -56,39 +61,35 @@ public class StreamsTest {
             }
             count++;
         }
-
-        assertThat(transactionIds, contains(1, 6, 3, 5));
+        return transactionIds;
     }
 
-    @Test
-    public void shouldGetCollectionsTransactionIdsWithStreams() {
-        List<Integer> transactionIds = TRANSACTIONS
+    private List<Integer> getTransactionIdsNew() {
+        return transactions
                 .stream()
                 .filter(t -> t.getType() == COLLECTIONS)
                 .sorted(comparing(Transaction::getValue).reversed())
                 .map(Transaction::getId)
                 .limit(4)
                 .collect(toList());
-
-        assertThat(transactionIds, contains(1, 6, 3, 5));
     }
 
     @Test
     public void printTransactions() {
         System.out.println("stream");
-        TRANSACTIONS.forEach(System.out::println);
+        transactions.forEach(System.out::println);
     }
 
     @Test
     public void printTransactionsInParallel() {
         System.out.println("parallel stream");
-        TRANSACTIONS.parallelStream().forEach(System.out::println);
+        transactions.parallelStream().forEach(System.out::println);
     }
 
     @Test
     public void shouldFindAndPrintAnyRtgsTransactions() {
         System.out.println("rtgs");
-        TRANSACTIONS.stream()
+        transactions.stream()
                 .filter(t -> t.getType() == RTGS)
                 .findAny()
                 .ifPresent(System.out::println);
@@ -96,13 +97,13 @@ public class StreamsTest {
 
     @Test
     public void shouldSumValues() {
-        int sum = TRANSACTIONS.stream().mapToInt(Transaction::getValue).sum();
+        int sum = transactions.stream().mapToInt(Transaction::getValue).sum();
         assertThat(sum, is(100));
     }
 
     @Test
     public void shouldSumExpensiveValues() {
-        Integer sum = TRANSACTIONS
+        Integer sum = transactions
                 .stream()
                 .filter(t -> t.getValue() > 10)
                 .map(t -> t.getValue())
