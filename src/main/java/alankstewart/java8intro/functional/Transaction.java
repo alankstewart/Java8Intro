@@ -6,7 +6,7 @@ package alankstewart.java8intro.functional;
 public class Transaction {
 
     public enum Type {
-        COLLECTIONS, RTGS, INTERNATIONAL, DIRECT_ENTRY
+        DEPOSIT, WITHDRAWAL, INTEREST, TRANSFER
     }
 
     private Integer id;

@@ -17,21 +17,21 @@ import static org.junit.Assert.assertThat;
 public class StreamsTest {
 
     private static List<Transaction> transactions = Arrays.asList(
-            new Transaction(1, 10, COLLECTIONS),
-            new Transaction(2, 1, COLLECTIONS),
-            new Transaction(3, 5, COLLECTIONS),
-            new Transaction(4, 3, COLLECTIONS),
-            new Transaction(5, 4, COLLECTIONS),
-            new Transaction(6, 6, COLLECTIONS),
-            new Transaction(7, 1, RTGS),
-            new Transaction(8, 10, RTGS),
-            new Transaction(9, 5, INTERNATIONAL),
-            new Transaction(10, 7, INTERNATIONAL),
-            new Transaction(11, 8, INTERNATIONAL),
-            new Transaction(12, 2, DIRECT_ENTRY),
-            new Transaction(13, 11, DIRECT_ENTRY),
-            new Transaction(14, 12, DIRECT_ENTRY),
-            new Transaction(15, 15, DIRECT_ENTRY));
+            new Transaction(1, 10, DEPOSIT),
+            new Transaction(2, 1, DEPOSIT),
+            new Transaction(3, 5, DEPOSIT),
+            new Transaction(4, 3, DEPOSIT),
+            new Transaction(5, 4, DEPOSIT),
+            new Transaction(6, 6, DEPOSIT),
+            new Transaction(7, 1, WITHDRAWAL),
+            new Transaction(8, 10, WITHDRAWAL),
+            new Transaction(9, 5, INTEREST),
+            new Transaction(10, 7, INTEREST),
+            new Transaction(11, 8, INTEREST),
+            new Transaction(12, 2, TRANSFER),
+            new Transaction(13, 11, TRANSFER),
+            new Transaction(14, 12, TRANSFER),
+            new Transaction(15, 15, TRANSFER));
 
     @Test
     public void shouldGetCollectionsTransactionIds() {
@@ -42,7 +42,7 @@ public class StreamsTest {
     private List<Integer> getTransactionIdsOld() {
         List<Transaction> collectionsTransactions = new ArrayList<>();
         for (Transaction t : transactions) {
-            if (t.getType() == COLLECTIONS) {
+            if (t.getType() == DEPOSIT) {
                 collectionsTransactions.add(t);
             }
         }
@@ -67,7 +67,7 @@ public class StreamsTest {
     private List<Integer> getTransactionIdsNew() {
         return transactions
                 .stream()
-                .filter(t -> t.getType() == COLLECTIONS)
+                .filter(t -> t.getType() == DEPOSIT)
                 .sorted(comparing(Transaction::getValue).reversed())
                 .map(Transaction::getId)
                 .limit(4)
@@ -90,7 +90,7 @@ public class StreamsTest {
     public void shouldFindAndPrintAnyRtgsTransactions() {
         System.out.println("rtgs");
         transactions.stream()
-                .filter(t -> t.getType() == RTGS)
+                .filter(t -> t.getType() == WITHDRAWAL)
                 .findAny()
                 .ifPresent(System.out::println);
     }
