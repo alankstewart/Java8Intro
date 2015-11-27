@@ -88,7 +88,7 @@ public class StreamsTest {
 
     @Test
     public void shouldFindAndPrintAnyRtgsTransactions() {
-        System.out.println("rtgs");
+        System.out.println("withdrawals");
         transactions.stream()
                 .filter(t -> t.getType() == WITHDRAWAL)
                 .findAny()
